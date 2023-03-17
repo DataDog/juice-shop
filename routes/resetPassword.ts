@@ -34,11 +34,11 @@ module.exports = function resetPassword () {
           where: { email }
         }]
       }).then((data: SecurityAnswerModel | null) => {
-        tracer.appsec.trackCustomEvent('users.password_reset', { 
+        tracer.appsec.trackCustomEvent('users.password_reset', {
           'usr.id': email,
-          'exists': true
-        });
-        tracer.appsec.trackCustomEvent('activity.sensitive', { 'name': 'pw_reset' })
+          exists: true
+        })
+        tracer.appsec.trackCustomEvent('activity.sensitive', { name: 'pw_reset' })
         if (data && security.hmac(answer) === data.answer) {
           UserModel.findByPk(data.UserId).then((user: UserModel | null) => {
             user?.update({ password: newPassword }).then((user: UserModel) => {
@@ -54,10 +54,10 @@ module.exports = function resetPassword () {
           res.status(401).send(res.__('Wrong answer to security question.'))
         }
       }).catch((error: unknown) => {
-        tracer.appsec.trackCustomEvent('users.password_reset', { 
+        tracer.appsec.trackCustomEvent('users.password_reset', {
           'usr.id': email,
-          'exists': false
-        });
+          exists: false
+        })
         next(error)
       })
     }

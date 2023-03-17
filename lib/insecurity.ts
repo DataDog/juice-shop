@@ -89,15 +89,15 @@ const authenticatedUsers: IAuthenticatedUsers = {
     this.idMap[user.data.id] = token
   },
   get: function (token: string) {
-    if(!token) {
-      return undefined;
+    if (!token) {
+      return undefined
     }
     const user = this.tokenMap[utils.unquote(token)]
     tracer.setUser({
       id: user.data.email,
       ref: user.data.id,
       role: user.data.id === users.admin.id ? 'admin' : 'user'
-    });
+    })
     return user
   },
   tokenOf: function (user: UserModel) {
@@ -210,7 +210,7 @@ exports.appendUserId = () => {
         id: user.data.email,
         ref: user.data.id,
         role: user.data.id === users.admin.id ? 'admin' : 'user'
-      });
+      })
 
       req.body.UserId = user.data.id
       next()
