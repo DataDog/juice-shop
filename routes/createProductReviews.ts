@@ -17,9 +17,9 @@ module.exports = function productReviews () {
   return (req: Request, res: Response) => {
     const user = security.authenticatedUsers.from(req)
     tracer.appsec.trackCustomEvent('activity.sensitive', {
-      'name': 'comment_post',
-      'required_role': 'admin'
-    });
+      name: 'comment_post',
+      required_role: 'admin'
+    })
     challengeUtils.solveIf(challenges.forgedReviewChallenge, () => { return user && user.data.email !== req.body.author })
     reviews.insert({
       product: req.params.id,

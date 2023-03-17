@@ -40,7 +40,7 @@ module.exports = function login () {
         if (user.data?.id && user.data.totpSecret !== '') {
           tracer.appsec.trackUserLoginFailureEvent(req.body.email || '', false, {
             reason: 'missing_2fa'
-          });
+          })
           res.status(401).json({
             status: 'totp_token_required',
             data: {
@@ -53,12 +53,12 @@ module.exports = function login () {
         } else if (user.data?.id) {
           tracer.appsec.trackUserLoginSuccessEvent({
             id: req.body.email || '',
-            ref: user.data.id,
-          }, {});
+            ref: user.data.id
+          }, {})
 
           afterLogin(user, res, next)
         } else {
-          tracer.appsec.trackUserLoginFailureEvent(req.body.email || '', false, {});
+          tracer.appsec.trackUserLoginFailureEvent(req.body.email || '', false, {})
           res.status(401).send(res.__('Invalid email or password.'))
         }
       }).catch((error: Error) => {
