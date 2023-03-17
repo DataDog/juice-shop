@@ -11,10 +11,15 @@ const reviews = require('../data/mongodb').reviews
 const utils = require('../lib/utils')
 const challenges = require('../data/datacache').challenges
 const security = require('../lib/insecurity')
+const tracer = require('dd-trace')
 
 module.exports = function productReviews () {
   return (req: Request, res: Response) => {
     const user = security.authenticatedUsers.from(req)
+    tracer.appsec.trackCustomEvent('activity.sensitive', {
+      'name': 'comment_post',
+      'required_role': 'admin'
+    });
     challengeUtils.solveIf(challenges.forgedReviewChallenge, () => { return user && user.data.email !== req.body.author })
     reviews.insert({
       product: req.params.id,

@@ -15,6 +15,7 @@ const security = require('../lib/insecurity')
 const challenges = require('../data/datacache').challenges
 const users = require('../data/datacache').users
 const config = require('config')
+const tracer = require('dd-trace')
 
 // vuln-code-snippet start loginAdminChallenge loginBenderChallenge loginJimChallenge
 module.exports = function login () {
@@ -37,6 +38,9 @@ module.exports = function login () {
       .then((authenticatedUser: { data: User }) => { // vuln-code-snippet neutral-line loginAdminChallenge loginBenderChallenge loginJimChallenge
         const user = utils.queryResultToJson(authenticatedUser)
         if (user.data?.id && user.data.totpSecret !== '') {
+          tracer.appsec.trackUserLoginFailureEvent(req.body.email || '', false, {
+            reason: 'missing_2fa'
+          });
           res.status(401).json({
             status: 'totp_token_required',
             data: {
@@ -47,8 +51,14 @@ module.exports = function login () {
             }
           })
         } else if (user.data?.id) {
+          tracer.appsec.trackUserLoginSuccessEvent({
+            id: req.body.email || '',
+            ref: user.data.id,
+          }, {});
+
           afterLogin(user, res, next)
         } else {
+          tracer.appsec.trackUserLoginFailureEvent(req.body.email || '', false, {});
           res.status(401).send(res.__('Invalid email or password.'))
         }
       }).catch((error: Error) => {
