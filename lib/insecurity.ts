@@ -205,7 +205,14 @@ exports.isCustomer = (req: Request) => {
 exports.appendUserId = () => {
   return (req: Request, res: Response, next: NextFunction) => {
     try {
-      req.body.UserId = authenticatedUsers.tokenMap[utils.jwtFrom(req)].data.id
+      const user = authenticatedUsers.tokenMap[utils.jwtFrom(req)]
+      tracer.setUser({
+        id: user.data.email,
+        ref: user.data.id,
+        role: user.data.id === users.admin.id ? 'admin' : 'user'
+      });
+
+      req.body.UserId = user.data.id
       next()
     } catch (error: any) {
       res.status(401).json({ status: 'error', message: error })

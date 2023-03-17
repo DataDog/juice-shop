@@ -114,6 +114,7 @@ const memory = require('./routes/memory')
 const chatbot = require('./routes/chatbot')
 const locales = require('./data/static/locales.json')
 const i18n = require('i18n')
+const tracer = require('dd-trace')
 
 const appName = config.get('application.customMetricsPrefix')
 const startupGauge = new client.Gauge({
@@ -450,6 +451,7 @@ restoreOverwrittenFilesWithOriginals().then(() => {
     // create a wallet when a new user is registered using API
     if (name === 'User') { // vuln-code-snippet neutral-line registerAdminChallenge
       resource.create.send.before((req: Request, res: Response, context: { instance: { id: any }, continue: any }) => { // vuln-code-snippet vuln-line registerAdminChallenge
+        tracer.appsec.trackCustomEvent('users.signup', { 'usr.id': req.body.email })
         WalletModel.create({ UserId: context.instance.id }).catch((err: unknown) => {
           console.log(err)
         })
