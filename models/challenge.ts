@@ -51,8 +51,8 @@ const ChallengeModelInit = (sequelize: Sequelize) => {
       mitigationUrl: DataTypes.STRING,
       solved: DataTypes.BOOLEAN,
       disabledEnv: DataTypes.STRING,
-      tutorialOrder: DataTypes.NUMBER,
-      codingChallengeStatus: DataTypes.NUMBER
+      tutorialOrder: DataTypes.INTEGER,
+      codingChallengeStatus: DataTypes.INTEGER
     },
     {
       tableName: 'Challenges',

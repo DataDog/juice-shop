@@ -28,15 +28,9 @@ import { WalletModelInit } from './wallet'
 
 const Sequelize = require('sequelize')
 
-const sequelize = new Sequelize('database', 'username', 'password', {
-  dialect: 'sqlite',
-  retry: {
-    match: [/SQLITE_BUSY/],
-    name: 'query',
-    max: 5
-  },
-  transactionType: 'IMMEDIATE',
-  storage: 'data/juiceshop.sqlite',
+const sequelize = new Sequelize('juiceshop', 'juiceshop', 'juiceshop-pwd', {
+  host: 'db',
+  dialect: 'mysql',
   logging: false
 })
 AddressModelInit(sequelize)

@@ -42,25 +42,25 @@ module.exports = function searchProducts () {
             next(error)
           })
         }
-        if (challengeUtils.notSolved(challenges.dbSchemaChallenge)) {
-          let solved = true
-          models.sequelize.query('SELECT sql FROM sqlite_master').then(([data]: any) => {
-            const tableDefinitions = utils.queryResultToJson(data)
-            if (tableDefinitions.data?.length) {
-              for (let i = 0; i < tableDefinitions.data.length; i++) {
-                if (tableDefinitions.data[i].sql) {
-                  solved = solved && utils.containsOrEscaped(dataString, tableDefinitions.data[i].sql)
-                  if (!solved) {
-                    break
-                  }
-                }
-              }
-              if (solved) {
-                challengeUtils.solve(challenges.dbSchemaChallenge)
-              }
-            }
-          })
-        } // vuln-code-snippet hide-end
+        // if (challengeUtils.notSolved(challenges.dbSchemaChallenge)) {
+        //   let solved = true
+        //   models.sequelize.query('SELECT sql FROM sqlite_master').then(([data]: any) => {
+        //     const tableDefinitions = utils.queryResultToJson(data)
+        //     if (tableDefinitions.data?.length) {
+        //       for (let i = 0; i < tableDefinitions.data.length; i++) {
+        //         if (tableDefinitions.data[i].sql) {
+        //           solved = solved && utils.containsOrEscaped(dataString, tableDefinitions.data[i].sql)
+        //           if (!solved) {
+        //             break
+        //           }
+        //         }
+        //       }
+        //       if (solved) {
+        //         challengeUtils.solve(challenges.dbSchemaChallenge)
+        //       }
+        //     }
+        //   })
+        // } // vuln-code-snippet hide-end
         for (let i = 0; i < products.length; i++) {
           products[i].name = req.__(products[i].name)
           products[i].description = req.__(products[i].description)
