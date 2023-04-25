@@ -7,6 +7,8 @@ import { Request, Response, NextFunction } from 'express'
 import { Captcha } from '../data/types'
 import { CaptchaModel } from '../models/captcha'
 
+const tracer = require('dd-trace')
+
 function captchas () {
   return async (req: Request, res: Response) => {
     const captchaId = req.app.locals.captchaId++
@@ -37,7 +39,15 @@ captchas.verifyCaptcha = () => (req: Request, res: Response, next: NextFunction)
   CaptchaModel.findOne({ where: { captchaId: req.body.captchaId } }).then((captcha: Captcha | null) => {
     if (captcha && req.body.captcha === captcha.answer) {
       next()
+      tracer.appsec.trackCustomEvent('activity.sensitive', {
+        name: 'captcha_solve',
+        success: true
+      });
     } else {
+      tracer.appsec.trackCustomEvent('activity.sensitive', {
+        name: 'captcha_solve',
+        success: false
+      });
       res.status(401).send(res.__('Wrong answer to CAPTCHA. Please try again.'))
     }
   }).catch((error: Error) => {

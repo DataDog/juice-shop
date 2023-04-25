@@ -93,11 +93,13 @@ const authenticatedUsers: IAuthenticatedUsers = {
       return undefined
     }
     const user = this.tokenMap[utils.unquote(token)]
-    tracer.setUser({
-      id: user.data.email,
-      ref: user.data.id,
-      role: user.data.id === users.admin.id ? 'admin' : 'user'
-    })
+    if(user) {
+      tracer.setUser({
+        id: user.data.email,
+        ref: user.data.id,
+        role: user.data.id === user.data.id ? 'admin' : 'user'
+      });
+    }
     return user
   },
   tokenOf: function (user: UserModel) {
