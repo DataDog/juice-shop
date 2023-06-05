@@ -15,6 +15,7 @@ const logger = require('../lib/logger')
 module.exports = function profileImageUrlUpload () {
   return (req: Request, res: Response, next: NextFunction) => {
     if (req.body.imageUrl !== undefined) {
+      const mainRes = res;
       const url = req.body.imageUrl
       if (url.match(/(.)*solve\/challenges\/server-side(.)*/) !== null) req.app.locals.abused_ssrf_bug = true
       const loggedInUser = security.authenticatedUsers.get(req.cookies.token)
@@ -24,6 +25,8 @@ module.exports = function profileImageUrlUpload () {
           .on('error', function (err: unknown) {
             UserModel.findByPk(loggedInUser.data.id).then(async (user: UserModel | null) => { return await user?.update({ profileImage: url }) }).catch((error: Error) => { next(error) })
             logger.warn(`Error retrieving user profile image: ${utils.getErrorMessage(err)}; using image link directly`)
+            res.location(process.env.BASE_PATH + '/profile');
+            res.redirect(process.env.BASE_PATH + '/profile');
           })
           .on('response', function (res: Response) {
             if (res.statusCode === 200) {
@@ -31,12 +34,17 @@ module.exports = function profileImageUrlUpload () {
               imageRequest.pipe(fs.createWriteStream(`frontend/dist/frontend/assets/public/images/uploads/${loggedInUser.data.id}.${ext}`))
               UserModel.findByPk(loggedInUser.data.id).then(async (user: UserModel | null) => { return await user?.update({ profileImage: `/assets/public/images/uploads/${loggedInUser.data.id}.${ext}` }) }).catch((error: Error) => { next(error) })
             } else UserModel.findByPk(loggedInUser.data.id).then(async (user: UserModel | null) => { return await user?.update({ profileImage: url }) }).catch((error: Error) => { next(error) })
+            mainRes.location(process.env.BASE_PATH + '/profile');
+            mainRes.redirect(process.env.BASE_PATH + '/profile');
           })
       } else {
         next(new Error('Blocked illegal activity by ' + req.socket.remoteAddress))
+        res.location(process.env.BASE_PATH + '/profile')
+        res.redirect(process.env.BASE_PATH + '/profile')
       }
+    } else {
+      res.location(process.env.BASE_PATH + '/profile')
+      res.redirect(process.env.BASE_PATH + '/profile')
     }
-    res.location(process.env.BASE_PATH + '/profile')
-    res.redirect(process.env.BASE_PATH + '/profile')
   }
 }
