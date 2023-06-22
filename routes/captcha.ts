@@ -42,12 +42,12 @@ captchas.verifyCaptcha = () => (req: Request, res: Response, next: NextFunction)
       tracer.appsec.trackCustomEvent('activity.sensitive', {
         name: 'captcha_solve',
         success: true
-      });
+      })
     } else {
       tracer.appsec.trackCustomEvent('activity.sensitive', {
         name: 'captcha_solve',
         success: false
-      });
+      })
       res.status(401).send(res.__('Wrong answer to CAPTCHA. Please try again.'))
     }
   }).catch((error: Error) => {
