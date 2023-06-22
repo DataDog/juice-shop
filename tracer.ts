@@ -1,5 +1,5 @@
-import tracer from 'dd-trace';
+import tracer from 'dd-trace'
 tracer.init({
-    appsec:true
-});
+  appsec: true
+})
 export default tracer

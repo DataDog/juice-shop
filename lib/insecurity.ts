@@ -93,12 +93,12 @@ const authenticatedUsers: IAuthenticatedUsers = {
       return undefined
     }
     const user = this.tokenMap[utils.unquote(token)]
-    if(user) {
+    if (user?.data) {
       tracer.setUser({
         id: user.data.email,
         ref: user.data.id,
-        role: user.data.id === user.data.id ? 'admin' : 'user'
-      });
+        role: user.data.id === users.admin.id ? 'admin' : 'user'
+      })
     }
     return user
   },
@@ -208,13 +208,15 @@ exports.appendUserId = () => {
   return (req: Request, res: Response, next: NextFunction) => {
     try {
       const user = authenticatedUsers.tokenMap[utils.jwtFrom(req)]
-      tracer.setUser({
-        id: user.data.email,
-        ref: user.data.id,
-        role: user.data.id === users.admin.id ? 'admin' : 'user'
-      })
+      if (user?.data) {
+        tracer.setUser({
+          id: user.data.email,
+          ref: user.data.id,
+          role: user.data.id === users.admin.id ? 'admin' : 'user'
+        })
 
-      req.body.UserId = user.data.id
+        req.body.UserId = user.data.id
+      }
       next()
     } catch (error: any) {
       res.status(401).json({ status: 'error', message: error })
