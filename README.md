@@ -322,7 +322,8 @@ For a list of all contributors to the OWASP Juice Shop please visit our
 
 This repo is a fork of the main project with the following changes applied:
 
-- SDK integration enabling the Datadog library to track:
+- Datadog's Node.js tracer installed and configured by default
+- SDK integration enabling the Datadog tracer to track:
    - User logins
    - User signups
    - User activity

@@ -117,6 +117,7 @@
     "config": "^3.3.7",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
+    "dd-trace": ">=4.2.0",
     "dottie": "^2.0.2",
     "download": "^8.0.0",
     "errorhandler": "^1.5.1",
