@@ -318,6 +318,17 @@ The OWASP Juice Shop core project team are:
 For a list of all contributors to the OWASP Juice Shop please visit our
 [HALL_OF_FAME.md](HALL_OF_FAME.md).
 
+### Datadog customizations
+
+This repo is a fork of the main project with the following changes applied:
+
+- SDK integration enabling the Datadog library to track:
+   - User logins
+   - User signups
+   - User activity
+   - Sensitive actions
+- Update the application's configuration to enable a few more vulnerabilities (SSTI, RCE...)
+
 ## Licensing
 
 [![license](https://img.shields.io/github/license/bkimminich/juice-shop.svg)](LICENSE)
