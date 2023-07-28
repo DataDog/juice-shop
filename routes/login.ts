@@ -38,7 +38,7 @@ module.exports = function login () {
       .then((authenticatedUser: { data: User }) => { // vuln-code-snippet neutral-line loginAdminChallenge loginBenderChallenge loginJimChallenge
         const user = utils.queryResultToJson(authenticatedUser)
         if (user.data?.id && user.data.totpSecret !== '') {
-          tracer.appsec.trackUserLoginFailureEvent(req.body.email || '', false, {
+          tracer.appsec.trackUserLoginFailureEvent(req.body.email || '', true, {
             reason: 'missing_2fa'
           })
           res.status(401).json({
@@ -58,8 +58,14 @@ module.exports = function login () {
 
           afterLogin(user, res, next)
         } else {
-          tracer.appsec.trackUserLoginFailureEvent(req.body.email || '', false, {})
-          res.status(401).send(res.__('Invalid email or password.'))
+          models.sequelize.query(`SELECT * FROM Users WHERE email = '${req.body.email || ''}' AND deletedAt IS NULL`, { model: UserModel, plain: true })
+            .then((authenticatedUser: { data: User }) => {
+              const hasUser = !!utils.queryResultToJson(authenticatedUser).data?.id
+              tracer.appsec.trackUserLoginFailureEvent(req.body.email || '', hasUser, {})
+              res.status(401).send(res.__('Invalid email or password.'))
+            }).catch((error: Error) => {
+              next(error)
+            })
         }
       }).catch((error: Error) => {
         next(error)
