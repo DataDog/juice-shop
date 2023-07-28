@@ -58,8 +58,14 @@ module.exports = function login () {
 
           afterLogin(user, res, next)
         } else {
-          tracer.appsec.trackUserLoginFailureEvent(req.body.email || '', !!user.data?.id, {})
-          res.status(401).send(res.__('Invalid email or password.'))
+          models.sequelize.query(`SELECT * FROM Users WHERE email = '${req.body.email || ''}' AND deletedAt IS NULL`, { model: UserModel, plain: true })
+            .then((authenticatedUser: { data: User }) => {
+              const hasUser = !!utils.queryResultToJson(authenticatedUser).data?.id
+              tracer.appsec.trackUserLoginFailureEvent(req.body.email || '', hasUser, {})
+              res.status(401).send(res.__('Invalid email or password.'))
+            }).catch((error: Error) => {
+              next(error)
+            })
         }
       }).catch((error: Error) => {
         next(error)
