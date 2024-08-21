@@ -51,11 +51,16 @@ module.exports = function login () {
             }
           })
         } else if (user.data?.id) {
+          
           tracer.appsec.trackUserLoginSuccessEvent({
             id: req.body.email || '',
             ref: user.data.id
           }, {})
 
+          if (tracer.appsec.isUserBlocked(user)) {  // also set the currently authenticated user
+              return tracer.appsec.blockRequest(req, res) // blocking response is sent
+          }
+          
           afterLogin(user, res, next)
         } else {
           models.sequelize.query(`SELECT * FROM Users WHERE email = '${req.body.email || ''}' AND deletedAt IS NULL`, { model: UserModel, plain: true })
