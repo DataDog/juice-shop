@@ -58,7 +58,7 @@ module.exports = function login () {
           }, {})
 
           if (tracer.appsec.isUserBlocked(user)) {  // also set the currently authenticated user
-              return tracer.appsec.blockRequest(req, res) // blocking response is sent
+            return tracer.appsec.blockRequest(req, res) // blocking response is sent
           }
           
           afterLogin(user, res, next)
