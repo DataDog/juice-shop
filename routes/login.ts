@@ -33,12 +33,13 @@ module.exports = function login () {
   }
 
   return (req: Request, res: Response, next: NextFunction) => {
+    const email = req.body.email || ''
     verifyPreLoginChallenges(req) // vuln-code-snippet hide-line
-    models.sequelize.query(`SELECT * FROM Users WHERE email = '${req.body.email || ''}' AND password = '${security.hash(req.body.password || '')}' AND deletedAt IS NULL`, { model: UserModel, plain: true }) // vuln-code-snippet vuln-line loginAdminChallenge loginBenderChallenge loginJimChallenge
+    models.sequelize.query(`SELECT * FROM Users WHERE email = '${email}' AND password = '${security.hash(req.body.password || '')}' AND deletedAt IS NULL`, { model: UserModel, plain: true }) // vuln-code-snippet vuln-line loginAdminChallenge loginBenderChallenge loginJimChallenge
       .then((authenticatedUser: { data: User }) => { // vuln-code-snippet neutral-line loginAdminChallenge loginBenderChallenge loginJimChallenge
         const user = utils.queryResultToJson(authenticatedUser)
         if (user.data?.id && user.data.totpSecret !== '') {
-          tracer.appsec.trackUserLoginFailureEvent(req.body.email || '', true, {
+          tracer.appsec.trackUserLoginFailureEvent(email, {
             reason: 'missing_2fa'
           })
           res.status(401).json({
@@ -51,22 +52,22 @@ module.exports = function login () {
             }
           })
         } else if (user.data?.id) {
-          
-          tracer.appsec.trackUserLoginSuccessEvent({
-            id: req.body.email || '',
+          const ddUser = {
+            id: email,
             ref: user.data.id
-          }, {})
+          }
+          tracer.appsec.trackUserLoginSuccessEvent(ddUser, {})
 
-          if (tracer.appsec.isUserBlocked(user)) {  // also set the currently authenticated user
+          if (tracer.appsec.isUserBlocked(ddUser)) { // also set the currently authenticated user
             return tracer.appsec.blockRequest(req, res) // blocking response is sent
           }
-          
+
           afterLogin(user, res, next)
         } else {
-          models.sequelize.query(`SELECT * FROM Users WHERE email = '${req.body.email || ''}' AND deletedAt IS NULL`, { model: UserModel, plain: true })
+          models.sequelize.query(`SELECT * FROM Users WHERE email = '${email}' AND deletedAt IS NULL`, { model: UserModel, plain: true })
             .then((authenticatedUser: { data: User }) => {
               const hasUser = !!utils.queryResultToJson(authenticatedUser).data?.id
-              tracer.appsec.trackUserLoginFailureEvent(req.body.email || '', hasUser, {})
+              tracer.appsec.trackUserLoginFailureEvent(email, hasUser, {})
               res.status(401).send(res.__('Invalid email or password.'))
             }).catch((error: Error) => {
               next(error)
