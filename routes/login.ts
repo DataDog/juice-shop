@@ -68,7 +68,6 @@ module.exports = function login () {
         } else {
           models.sequelize.query(`SELECT * FROM Users WHERE email = '${email}' AND deletedAt IS NULL`, { model: UserModel, plain: true })
             .then((authenticatedUser: { data: User }) => {
-              console.log(authenticatedUser)
               const userId = utils.queryResultToJson(authenticatedUser).data?.id
               const hasUser = !!userId
               tracer.appsec.trackUserLoginFailureEvent(hasUser ? userId : email, hasUser, {
