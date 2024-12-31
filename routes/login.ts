@@ -53,10 +53,12 @@ module.exports = function login () {
           })
         } else if (user.data?.id) {
           const ddUser = {
-            id: email,
-            ref: user.data.id
+            id: user.data.id,
+            email: email
           }
-          tracer.appsec.trackUserLoginSuccessEvent(ddUser, {})
+          tracer.appsec.trackUserLoginSuccessEvent(ddUser, {
+            'usr.login' email
+          })
 
           if (tracer.appsec.isUserBlocked(ddUser)) { // also set the currently authenticated user
             return tracer.appsec.blockRequest(req, res) // blocking response is sent
@@ -66,8 +68,12 @@ module.exports = function login () {
         } else {
           models.sequelize.query(`SELECT * FROM Users WHERE email = '${email}' AND deletedAt IS NULL`, { model: UserModel, plain: true })
             .then((authenticatedUser: { data: User }) => {
-              const hasUser = !!utils.queryResultToJson(authenticatedUser).data?.id
-              tracer.appsec.trackUserLoginFailureEvent(email, hasUser, {})
+              console.log(authenticatedUser)
+              const userId = utils.queryResultToJson(authenticatedUser).data?.id
+              const hasUser = !!userId
+              tracer.appsec.trackUserLoginFailureEvent(hasUser ? userId : email, hasUser, {
+                'usr.login': email
+              })
               res.status(401).send(res.__('Invalid email or password.'))
             }).catch((error: Error) => {
               next(error)
