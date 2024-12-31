@@ -57,7 +57,7 @@ module.exports = function login () {
             email: email
           }
           tracer.appsec.trackUserLoginSuccessEvent(ddUser, {
-            'usr.login' email
+            'usr.login': email
           })
 
           if (tracer.appsec.isUserBlocked(ddUser)) { // also set the currently authenticated user
