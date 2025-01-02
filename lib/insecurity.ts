@@ -95,8 +95,8 @@ const authenticatedUsers: IAuthenticatedUsers = {
     const user = this.tokenMap[utils.unquote(token)]
     if (user?.data) {
       tracer.setUser({
-        id: user.data.email,
-        ref: user.data.id,
+        id: user.data.id,
+        email: user.data.email,
         role: user.data.id === users.admin.id ? 'admin' : 'user'
       })
     }
@@ -210,8 +210,8 @@ exports.appendUserId = () => {
       const user = authenticatedUsers.tokenMap[utils.jwtFrom(req)]
       if (user?.data) {
         tracer.setUser({
-          id: user.data.email,
-          ref: user.data.id,
+          id: user.data.id,
+          email: user.data.email,
           role: user.data.id === users.admin.id ? 'admin' : 'user'
         })
 
