@@ -70,7 +70,7 @@ module.exports = function login () {
             .then((authenticatedUser: { data: User }) => {
               const userId = utils.queryResultToJson(authenticatedUser).data?.id
               const hasUser = !!userId
-              tracer.appsec.trackUserLoginFailureEvent(hasUser ? userId : email, hasUser, {
+              tracer.appsec.trackUserLoginFailureEvent(hasUser ? userId.toString() : email, hasUser, {
                 'usr.login': email
               })
               res.status(401).send(res.__('Invalid email or password.'))
