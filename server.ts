@@ -277,19 +277,14 @@ restoreOverwrittenFilesWithOriginals().then(() => {
   app.post('/profile/image/url', uploadToMemory.single('file'), profileImageUrlUpload())
   app.post('/rest/memories', uploadToDisk.single('image'), ensureFileIsPassed, security.appendUserId(), metrics.observeFileUploadMetricsMiddleware(), memory.addMemory())
 
-  app.use(bodyParser.text({ type: '*/*' }))
   app.use(function jsonParser (req: Request, res: Response, next: NextFunction) {
     // @ts-expect-error
     req.rawBody = req.body
     if (req.headers['content-type']?.includes('application/json')) {
-      if (!req.body) {
-        req.body = {}
-      }
-      if (req.body !== Object(req.body)) { // Expensive workaround for 500 errors during Frisby test run (see #640)
-        req.body = JSON.parse(req.body)
-      }
+      bodyParser.json({ strict: false })(req, res, next)
+    } else {
+      bodyParser.text({ type: '*/*' })(req, res, next)
     }
-    next()
   })
 
   /* HTTP request logging */
