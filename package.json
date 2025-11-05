@@ -257,7 +257,7 @@
     "typescript": "~4.6.0"
   },
   "engines": {
-    "node": "14 - 19"
+    "node": "14 - 24"
   },
   "os": [
     "win32",
