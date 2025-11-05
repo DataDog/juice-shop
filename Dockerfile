@@ -1,6 +1,7 @@
 FROM node:18 as installer
 COPY . /juice-shop
 WORKDIR /juice-shop
+
 RUN npm i -g typescript ts-node
 RUN npm install --omit=dev --unsafe-perm
 RUN npm dedupe
@@ -18,6 +19,20 @@ RUN rm i18n/*.json || true
 FROM gcr.io/distroless/nodejs:18
 ARG BUILD_DATE
 ARG VCS_REF
+
+ARG DD_GIT_REPOSITORY_URL
+ARG DD_GIT_COMMIT_SHA
+ENV DD_GIT_REPOSITORY_URL=${DD_GIT_REPOSITORY_URL}
+ENV DD_GIT_COMMIT_SHA=${DD_GIT_COMMIT_SHA}
+
+ENV DD_SERVICE="juice-shop"
+ENV DD_ENV="prod"
+ENV DD_VERSION="14.5.1"
+
+LABEL com.datadoghq.tags.service="juice-shop"
+LABEL com.datadoghq.tags.env="prod"
+LABEL com.datadoghq.tags.version="14.5.1"
+
 LABEL maintainer="Bjoern Kimminich <bjoern.kimminich@owasp.org>" \
     org.opencontainers.image.title="OWASP Juice Shop" \
     org.opencontainers.image.description="Probably the most modern and sophisticated insecure web application" \

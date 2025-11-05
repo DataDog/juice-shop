@@ -48,7 +48,7 @@
     "..."
   ],
   "scripts": {
-    "build:frontend": "cd frontend && node ./node_modules/@angular/cli/bin/ng build --aot --configuration production --output-hashing=none --vendor-chunk=true --source-map=false",
+    "build:frontend": "cd frontend && node ./node_modules/@angular/cli/bin/ng build --aot --configuration production --output-hashing=none --vendor-chunk=true --source-map=true",
     "build:server": "tsc",
     "cypress:open": "cypress open",
     "frisby": "nyc --report-dir=./build/reports/coverage/api-tests jest --silent --runInBand --forceExit",
@@ -153,7 +153,7 @@
     "jsonwebtoken": "0.4.0",
     "jssha": "^3.1.1",
     "juicy-chat-bot": "~0.6.6",
-    "libxmljs2": "^0.31.0",
+    "libxmljs2": "^0.32.0",
     "marsdb": "^0.6.11",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
