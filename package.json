@@ -150,7 +150,7 @@
     "is-heroku": "^2.0.0",
     "is-windows": "^1.0.2",
     "js-yaml": "^3.14.0",
-    "jsonwebtoken": "0.4.0",
+    "jsonwebtoken": "9.0.3",
     "jssha": "^3.1.1",
     "juicy-chat-bot": "~0.6.6",
     "libxmljs2": "~0.37.0",
@@ -170,7 +170,7 @@
     "request": "^2.88.2",
     "sanitize-filename": "^1.6.3",
     "sanitize-html": "1.4.2",
-    "semver": "^7.3.2",
+    "semver": "^7.7.4",
     "sequelize": "^6.15.1",
     "serve-index": "^1.9.1",
     "socket.io": "^3.1.0",
@@ -226,8 +226,8 @@
     "@types/swagger-ui-express": "^4.1.2",
     "@types/unzipper": "^0.10.3",
     "@types/validator": "^13.1.3",
-    "@typescript-eslint/eslint-plugin": "^4.16.1",
-    "@typescript-eslint/parser": "^4.16.1",
+    "@typescript-eslint/eslint-plugin": "^8.58.0",
+    "@typescript-eslint/parser": "^8.58.0",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "cross-spawn": "^7.0.3",
@@ -254,7 +254,7 @@
     "source-map-support": "^0.5.19",
     "ts-jest": "^26.5.0",
     "ts-node": "^10.8.0",
-    "typescript": "~4.6.0"
+    "typescript": "~4.9.5"
   },
   "engines": {
     "node": "14 - 24"
