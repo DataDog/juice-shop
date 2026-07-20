@@ -156,7 +156,7 @@
     "libxmljs2": "~0.37.0",
     "marsdb": "^0.6.11",
     "morgan": "^1.10.0",
-    "multer": "^1.4.5-lts.1",
+    "multer": "^2.2.0",
     "mysql2": "^3.2.0",
     "node-pre-gyp": "^0.15.0",
     "notevil": "^1.3.3",
@@ -278,5 +278,59 @@
       "angular",
       "inject"
     ]
+  },
+  "overrides": {
+    "sanitize-html": {
+      "readable-stream": "^1.1.14"
+    },
+    "compression": {
+      "safe-buffer": "^5.2.1",
+      "mime-db": "^1.54.0"
+    },
+    "cypress": {
+      "safe-buffer": "^5.2.1"
+    },
+    "download": {
+      "safe-buffer": "^5.2.1",
+      "string_decoder": "^1.3.0",
+      "mime-db": "^1.54.0"
+    },
+    "express": {
+      "safe-buffer": "^5.2.1"
+    },
+    "grunt-contrib-compress": {
+      "safe-buffer": "^5.2.1",
+      "string_decoder": "^1.3.0"
+    },
+    "mocha": {
+      "safe-buffer": "^5.2.1"
+    },
+    "morgan": {
+      "safe-buffer": "^5.2.1"
+    },
+    "readable-stream": {
+      "safe-buffer": "^5.2.1"
+    },
+    "request": {
+      "safe-buffer": "^5.2.1"
+    },
+    "string_decoder": {
+      "safe-buffer": "^5.2.1"
+    },
+    "multer": {
+      "string_decoder": "^1.3.0"
+    },
+    "node-pre-gyp": {
+      "string_decoder": "^1.3.0"
+    },
+    "readable-web-to-node-stream": {
+      "string_decoder": "^1.3.0"
+    },
+    "unzipper": {
+      "string_decoder": "^1.3.0"
+    },
+    "mime-types": {
+      "mime-db": "^1.54.0"
+    }
   }
 }
