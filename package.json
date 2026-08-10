@@ -108,7 +108,7 @@
     ]
   },
   "dependencies": {
-    "body-parser": "^1.19.0",
+    "body-parser": "^1.20.6",
     "check-dependencies": "^1.1.0",
     "clarinet": "^0.12.4",
     "colors": "1.4.0",
@@ -118,7 +118,7 @@
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "dd-trace": "^5.76.0",
-    "dottie": "^2.0.2",
+    "dottie": "^2.0.7",
     "download": "^8.0.0",
     "errorhandler": "^1.5.1",
     "exif": "^0.6.0",
@@ -149,7 +149,7 @@
     "is-gitpod": "^2.0.9",
     "is-heroku": "^2.0.0",
     "is-windows": "^1.0.2",
-    "js-yaml": "^3.14.0",
+    "js-yaml": "^3.15.1",
     "jsonwebtoken": "0.4.0",
     "jssha": "^3.1.1",
     "juicy-chat-bot": "~0.6.6",
@@ -278,5 +278,19 @@
       "angular",
       "inject"
     ]
+  },
+  "overrides": {
+    "mocha": {
+      "js-yaml": "^4.3.1"
+    },
+    "express-jwt": {
+      "moment": "^2.30.1"
+    },
+    "express": {
+      "path-to-regexp": ">=0.1.13"
+    },
+    "cacache": {
+      "glob": "^10.5.0"
+    }
   }
 }
