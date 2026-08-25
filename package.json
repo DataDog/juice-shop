@@ -117,7 +117,7 @@
     "config": "^3.3.7",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
-    "dd-trace": "^5.76.0",
+    "dd-trace": "^5.123.0",
     "dottie": "^2.0.2",
     "download": "^8.0.0",
     "errorhandler": "^1.5.1",
@@ -171,7 +171,7 @@
     "sanitize-filename": "^1.6.3",
     "sanitize-html": "1.4.2",
     "semver": "^7.3.2",
-    "sequelize": "^6.15.1",
+    "sequelize": "^6.37.8",
     "serve-index": "^1.9.1",
     "socket.io": "^3.1.0",
     "sqlite3": "^5.0.8",
@@ -278,5 +278,42 @@
       "angular",
       "inject"
     ]
+  },
+  "overrides": {
+    "juicy-chat-bot": {
+      "vm2": "^3.11.6"
+    },
+    "hbs": {
+      "handlebars": "^4.7.9"
+    },
+    "@cypress/request": {
+      "form-data": "^2.5.6"
+    },
+    "request": {
+      "form-data": "^2.5.6"
+    },
+    "glob": {
+      "minimatch": {
+        ".": "^3.1.5",
+        "brace-expansion": "^1.1.18"
+      }
+    },
+    "grunt": {
+      "minimatch": "^3.1.5"
+    },
+    "mocha": {
+      "minimatch": "^3.1.5"
+    },
+    "replace": {
+      "minimatch": "^3.1.5"
+    },
+    "cacache": {
+      "brace-expansion": "^2.1.4",
+      "minimatch": "^9.0.9"
+    },
+    "filehound": {
+      "brace-expansion": "^2.1.4",
+      "minimatch": "^5.1.9"
+    }
   }
 }
